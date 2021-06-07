@@ -4,7 +4,7 @@ dependencies:
   - notebook
   - ipywidgets
   - requests
-  - jupyterlab
+#  - jupyterlab
   # bind ipython version (compatibility to pgcontents)
   - ipython
   # bind tornado version (websocket problems)
@@ -18,7 +18,7 @@ dependencies:
   - six
   - sqlalchemy
   - nose
-  - pip
+  - pip = 21
   - pip:
     - pgcontents
     - git+git://github.com/ipython-contrib/jupyter_contrib_nbextensions.git
