@@ -20,5 +20,6 @@ dependencies:
   - nose
   - pip = 21
   - pip:
-    - pgcontents
+    #- pgcontents
     - git+git://github.com/ipython-contrib/jupyter_contrib_nbextensions.git
+    - git+git://github.com/quantopian/pgcontents.git
