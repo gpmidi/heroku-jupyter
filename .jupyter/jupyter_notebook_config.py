@@ -18,6 +18,8 @@ try:
 
     ### PostresContentsManager ###
     database_url = os.getenv('DATABASE_URL', None)
+    if database_url.startswith("postgres://"):
+        database_url = database_url.replace("postgres://", "postgresql://", 1)
     if database_url:
         # Tell IPython to use PostgresContentsManager for all storage.
         c.NotebookApp.contents_manager_class = pgcontents.PostgresContentsManager
