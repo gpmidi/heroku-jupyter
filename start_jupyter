@@ -2,14 +2,6 @@
 set -e
 set -x
 
-export DATABASE_URL=`echo $DATABASE_URL | sed "s/^postgres:\/\//postgresql:\/\//"`
-
-
-pgcontents init -l $DATABASE_URL --no-prompt
-
-jupyter contrib nbextension install --user
-jupyter nbextensions_configurator enable --user
-
 jupyter notebook \
 	--no-browser --no-mathjax --ip=* --port $PORT \
 	$JUPYTER_NOTEBOOK_ARGS \
