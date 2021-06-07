@@ -8,7 +8,7 @@ dependencies:
   # bind ipython version (compatibility to pgcontents)
   - ipython
   # bind tornado version (websocket problems)
-  - tornado = 4.5
+  - tornado
   # get dependencies for pgcontents
   - certifi
   - click
