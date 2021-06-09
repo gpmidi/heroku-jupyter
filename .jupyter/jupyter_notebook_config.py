@@ -89,4 +89,4 @@ except Exception:
     traceback.print_exc()
     # if an exception occues, notebook normally would get started
     # without password set. For security reasons, execution is stopped.
-    os.exit(1)
+    exit(1)
