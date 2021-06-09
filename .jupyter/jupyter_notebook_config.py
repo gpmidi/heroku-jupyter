@@ -62,9 +62,9 @@ try:
             },
             # Args for  S3ContentManager.
             's3': {
-                "access_key_id": os.environ.get("BUCKETEER_AWS_ACCESS_KEY_ID"),
-                "secret_access_key": os.environ.get("BUCKETEER_AWS_SECRET_ACCESS_KEY"),
-                "endpoint_url": "https://s3." + os.environ.get("BUCKETEER_AWS_REGION") + ".amazonaws.com",
+                "access_key_id": os.environ.get("BUCKETEER_AWS_ACCESS_KEY_ID", ""),
+                "secret_access_key": os.environ.get("BUCKETEER_AWS_SECRET_ACCESS_KEY", ""),
+                "endpoint_url": "https://s3." + os.environ.get("BUCKETEER_AWS_REGION", "us-east-1") + ".amazonaws.com",
                 "bucket": os.environ.get("BUCKETEER_BUCKET_NAME", ""),
                 "prefix": os.environ.get("BUCKETEER_BUCKET_NAME", ""),
             },
