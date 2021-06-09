@@ -3,7 +3,14 @@ try:
     import json
     import traceback
     import IPython.lib
-    from hybridcontents import *
+    from hybridcontents import HybridContentsManager
+    from pgcontents.pgmanager import PostgresContentsManager
+    from s3contents import S3ContentsManager, GCSContentsManager
+
+    # LargeFileManager is the default Jupyter content manager
+    # NOTE: LargFileManager only exists in notebook > 5
+    # If using notebook < 5, use FileContentManager instead
+    from notebook.services.contents.largefilemanager import LargeFileManager
 
     c = get_config()
 
@@ -23,30 +30,63 @@ try:
     if database_url:
         # Tell IPython to use PostgresContentsManager for all storage.
         c.NotebookApp.contents_manager_class = HybridContentsManager
-        # Set the url for the database used to store files.  See
-        # http://docs.sqlalchemy.org/en/rel_0_9/core/engines.html#postgresql
-        # for more info on db url formatting.
-        c.PostgresContentsManager.db_url = database_url
 
-        # PGContents associates each running notebook server with a user, allowing
-        # multiple users to connect to the same database without trampling each other's
-        # notebooks. By default, we use the result of result of getpass.getuser(), but
-        # a username can be specified manually like so:
-        c.PostgresContentsManager.user_id = 'heroku'
+        c.HybridContentsManager.manager_classes = {
+            # # Associate the root directory with a LargeFileManager,
+            # # This manager will receive all requests that don't fall under any of the
+            # # other managers.
+            # # If you want to make this path un-editable you can configure it to use a read-only filesystem
+            # '': LargeFileManager,
+            # # Associate /directory with a LargeFileManager.
+            # 'directory': LargeFileManager,
+            # Associate the postgres directory with a PostgresContentManager
+            'postgres': PostgresContentsManager,
+            # # Associate the s3 directory with AWS S3
+            # 's3': S3ContentsManager,
+            # # Associate the gcs directory with GCS
+            # 'gcs': GCSContentsManager
+        }
 
-        # Set a maximum file size, if desired.
-        #c.PostgresContentsManager.max_file_size_bytes = 1000000 # 1MB File cap
+        c.HybridContentsManager.manager_kwargs = {
+            # # Args for the LargeFileManager mapped to /directory
+            # '': {
+            #     'root_dir': '/tmp/read-only',
+            # },
+            # # Args for the LargeFileManager mapped to /directory
+            # 'directory': {
+            #     'root_dir': '/home/viaduct/local_directory',
+            # },
+            # Args for  PostgresContentsManager.
+            'postgres': {
+                'db_url': database_url,
+                'max_file_size_bytes': 1024*1024*1024*2,  # Optional
+            },
+            # # Args for  S3ContentManager.
+            # 's3': {
+            #     "access_key_id": os.environ.get("AWS_ACCESS_KEY_ID"),
+            #     "secret_access_key": os.environ.get("AWS_SECRET_ACCESS_KEY"),
+            #     "endpoint_url": os.environ.get("AWS_ENDPOINT_URL"),
+            #     "bucket": "my-remote-data-bucket",
+            #     "prefix": "s3/prefix"
+            # },
+            # # Args for  GCSContentManager.
+            # 'gcs': {
+            #     'project': "<your-project>",
+            #     'token': "~/.config/gcloud/application_default_credentials.json",
+            #     'bucket': "<bucket-name>"
+            # },
+        }
 
-    ### CloudFoundry specific settings
-    vcap_application_json = os.getenv('VCAP_APPLICATION', None)
-    if vcap_application_json:
-        vcap_application = json.loads(vcap_application_json)
-        uri = vcap_application['uris'][0]
-        c.NotebookApp.allow_origin = 'https://{}'.format(uri)
-        c.NotebookApp.websocket_url = 'wss://{}:4443'.format(uri)
+    def no_spaces(path):
+        return ' ' not in path
+
+    c.HybridContentsManager.path_validators = {
+        'postgres': no_spaces,
+        # 's3': no_spaces
+    }
 
 except Exception:
     traceback.print_exc()
     # if an exception occues, notebook normally would get started
     # without password set. For security reasons, execution is stopped.
-    exit(-1)
+    os.exit(1)
