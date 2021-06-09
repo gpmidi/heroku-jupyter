@@ -4,7 +4,7 @@ try:
     import traceback
     import IPython.lib
     from hybridcontents import HybridContentsManager
-    # from s3contents import S3ContentsManager, GCSContentsManager
+    from s3contents import S3ContentsManager, GCSContentsManager
     from pgcontents.pgmanager import PostgresContentsManager
     # LargeFileManager is the default Jupyter content manager
     # NOTE: LargFileManager only exists in notebook > 5
@@ -40,8 +40,8 @@ try:
             # 'directory': LargeFileManager,
             # Associate the postgres directory with a PostgresContentManager
             'postgres': PostgresContentsManager,
-            # # Associate the s3 directory with AWS S3
-            # 's3': S3ContentsManager,
+            # Associate the s3 directory with AWS S3
+            's3': S3ContentsManager,
             # # Associate the gcs directory with GCS
             # 'gcs': GCSContentsManager
         }
@@ -58,16 +58,16 @@ try:
             # Args for  PostgresContentsManager.
             'postgres': {
                 'db_url': database_url,
-                'max_file_size_bytes': 1024*1024*1024*2,  # Optional
+                'max_file_size_bytes': 1024 * 1024 * 1024 * 2,  # Optional
             },
-            # # Args for  S3ContentManager.
-            # 's3': {
-            #     "access_key_id": os.environ.get("AWS_ACCESS_KEY_ID"),
-            #     "secret_access_key": os.environ.get("AWS_SECRET_ACCESS_KEY"),
-            #     "endpoint_url": os.environ.get("AWS_ENDPOINT_URL"),
-            #     "bucket": "my-remote-data-bucket",
-            #     "prefix": "s3/prefix"
-            # },
+            # Args for  S3ContentManager.
+            's3': {
+                "access_key_id": os.environ.get("BUCKETEER_AWS_ACCESS_KEY_ID"),
+                "secret_access_key": os.environ.get("BUCKETEER_AWS_SECRET_ACCESS_KEY"),
+                "endpoint_url": "https://s3." + os.environ.get("BUCKETEER_AWS_REGION") + ".amazonaws.com",
+                "bucket": os.environ.get("BUCKETEER_BUCKET_NAME", ""),
+                "prefix": os.environ.get("BUCKETEER_BUCKET_NAME", ""),
+            },
             # # Args for  GCSContentManager.
             # 'gcs': {
             #     'project': "<your-project>",
@@ -76,8 +76,10 @@ try:
             # },
         }
 
+
     def no_spaces(path):
         return ' ' not in path
+
 
     c.HybridContentsManager.path_validators = {
         'postgres': no_spaces,
