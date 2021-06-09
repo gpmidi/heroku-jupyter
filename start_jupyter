@@ -2,6 +2,8 @@
 set -e
 set -x
 
+pgcontents init -l $DATABASE_URL --no-prompt
+
 jupyter contrib nbextension install --user
 jupyter nbextensions_configurator enable --user
 
