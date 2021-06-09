@@ -3,7 +3,7 @@ try:
     import json
     import traceback
     import IPython.lib
-    import pgcontents
+    from hybridcontents import *
 
     c = get_config()
 
@@ -22,8 +22,7 @@ try:
         database_url = database_url.replace("postgres://", "postgresql://", 1)
     if database_url:
         # Tell IPython to use PostgresContentsManager for all storage.
-        c.NotebookApp.contents_manager_class = pgcontents.PostgresContentsManager
-
+        c.NotebookApp.contents_manager_class = HybridContentsManager
         # Set the url for the database used to store files.  See
         # http://docs.sqlalchemy.org/en/rel_0_9/core/engines.html#postgresql
         # for more info on db url formatting.
