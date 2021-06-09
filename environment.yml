@@ -1,24 +1,28 @@
 name: heroku-jupyter
 dependencies:
   # bind notebook version (compatibility to pgcontents)
-  - notebook = 4
+  - notebook = 6
   - ipywidgets
   - requests
+  #  - jupyterlab
   # bind ipython version (compatibility to pgcontents)
-  - ipython = 5
+  - ipython
   # bind tornado version (websocket problems)
-  - tornado = 4.5
+  - tornado
   # get dependencies for pgcontents
   - certifi
   - click
-  - cryptography 
+  - cryptography
   - mako
   - psycopg2
   - six
   - sqlalchemy
   - nose
-  - hybridcontents
+  - pip = 21
   - pip:
-    #- pgcontents
-    - git+git://github.com/ipython-contrib/jupyter_contrib_nbextensions.git
-    - git+git://github.com/quantopian/pgcontents.git
+      - hybridcontents
+      - pgcontents
+      - jupyterlab
+      - s3contents
+      - git+git://github.com/ipython-contrib/jupyter_contrib_nbextensions.git
+      - git+git://github.com/quantopian/pgcontents.
