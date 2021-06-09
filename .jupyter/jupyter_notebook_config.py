@@ -75,7 +75,7 @@ try:
             #     'bucket': "<bucket-name>"
             # },
         }
-
+        c.PostgresContentsManager.user_id = 'heroku'
 
     def no_spaces(path):
         return ' ' not in path
