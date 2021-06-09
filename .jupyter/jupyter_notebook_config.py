@@ -39,7 +39,7 @@ try:
             # # Associate /directory with a LargeFileManager.
             # 'directory': LargeFileManager,
             # Associate the postgres directory with a PostgresContentManager
-            'postgres': PostgresContentsManager,
+            '': PostgresContentsManager,
             # Associate the s3 directory with AWS S3
             's3': S3ContentsManager,
             # # Associate the gcs directory with GCS
@@ -56,7 +56,7 @@ try:
             #     'root_dir': '/home/viaduct/local_directory',
             # },
             # Args for  PostgresContentsManager.
-            'postgres': {
+            '': {
                 'db_url': database_url,
                 'max_file_size_bytes': 1024 * 1024 * 1024 * 2,  # Optional
             },
