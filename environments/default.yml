@@ -19,7 +19,6 @@ dependencies:
   - sqlalchemy
   - nose
   - pip = 21
-  - viaduct
-  - hybridcontents
   - pip:
+    - hybridcontents
     - git+git://github.com/ipython-contrib/jupyter_contrib_nbextensions.git
