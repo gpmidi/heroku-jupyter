@@ -24,5 +24,7 @@ dependencies:
       - pgcontents
       - s3contents
       - jupyterlab
+      - psycopg2-binary
       - git+git://github.com/ipython-contrib/jupyter_contrib_nbextensions.git
       - git+git://github.com/quantopian/pgcontents.git
+      - Django
