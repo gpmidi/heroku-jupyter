@@ -4,9 +4,8 @@ try:
     import traceback
     import IPython.lib
     from hybridcontents import HybridContentsManager
-    from pgcontents.pgmanager import PostgresContentsManager
     from s3contents import S3ContentsManager, GCSContentsManager
-
+    from pgcontents.pgmanager import PostgresContentsManager
     # LargeFileManager is the default Jupyter content manager
     # NOTE: LargFileManager only exists in notebook > 5
     # If using notebook < 5, use FileContentManager instead
